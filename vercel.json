@@ -7,6 +7,6 @@
       }
     ],
     "routes": [
-      { "src": "/(.*)", "dest": "/" }
+      { "src": "/(.*)", "dest": "/public/js/index.js" }
     ]
 }
