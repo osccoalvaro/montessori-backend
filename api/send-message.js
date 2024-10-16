@@ -1,5 +1,24 @@
+import express from 'express';
+import compression from 'compression';
 import { z, ZodError } from 'zod';
-import sheets, { SHEET_ID } from '../sheetClient.js'; // Ajusta la ruta si es necesario
+import sheets, { SHEET_ID } from './sheetClient.js';
+import { config } from 'dotenv';
+import cors from 'cors'; // Importar cors
+config({ path: './.env' });
+
+const app = express();
+
+// Habilitar la compresión
+app.use(compression());
+
+// Habilitar CORS
+app.use(cors({
+  origin: 'https://montessori-frontend.pages.dev', // Origen del frontend
+}));
+
+// Middlewares
+app.use(express.json());
+app.use(express.static('public'));
 
 const contactFormSchema = z.object({
   date: z.string(),
@@ -11,30 +30,31 @@ const contactFormSchema = z.object({
   grado: z.string().trim().min(1, { message: 'Grado is required' }),
 });
 
-export default async (req, res) => {
-  if (req.method === 'POST') {
-    try {
-      const body = contactFormSchema.parse(req.body);
-      const rows = Object.values(body);
-      
-      await sheets.spreadsheets.values.append({
-        spreadsheetId: SHEET_ID,
-        range: 'Data!A:G',
-        insertDataOption: 'INSERT_ROWS',
-        valueInputOption: 'RAW',
-        requestBody: {
-          values: [rows],
-        },
-      });
-      res.status(200).json({ message: 'Data added successfully' });
-    } catch (error) {
-      if (error instanceof ZodError) {
-        res.status(400).json({ error: error.message });
-      } else {
-        res.status(400).json({ error });
-      }
+app.post('/send-message', async (req, res) => {
+  try {
+    const body = contactFormSchema.parse(req.body);
+    // Object to Sheets
+    const rows = Object.values(body);
+    console.log(rows);
+    await sheets.spreadsheets.values.append({
+      spreadsheetId: SHEET_ID,
+      range: 'Data!A:G',
+      insertDataOption: 'INSERT_ROWS',
+      valueInputOption: 'RAW',
+      requestBody: {
+        values: [rows],
+      },
+    });
+    res.json({ message: 'Data added successfully' });
+  } catch (error) {
+    if (error instanceof ZodError) {
+      res.status(400).json({ error: error.message });
+    } else {
+      res.status(400).json({ error });
     }
-  } else {
-    res.status(405).json({ message: 'Method Not Allowed' });
   }
-};
+});
+
+app.listen(process.env.PORT, () => {
+  console.log('Server running in port http://localhost:3000')
+});
