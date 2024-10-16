@@ -2,11 +2,11 @@
   "name": "montessori-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "send-message.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon public/js/index.js",
-    "start": "node public/js/index.js"
+    "dev": "nodemon public/js/send-message.js",
+    "start": "node public/js/send-message.js"
   },
   "keywords": [],
   "author": "",

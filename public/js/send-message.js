@@ -30,11 +30,6 @@ const contactFormSchema = z.object({
   grado: z.string().trim().min(1, { message: 'Grado is required' }),
 });
 
-/*
-nombre: z.string().required({ message: 'Nombre is required' }),
-nombre: z.string().nonempty({ message: 'Nombre is required' }),
-*/
-
 app.post('/send-message', async (req, res) => {
   try {
     const body = contactFormSchema.parse(req.body);
