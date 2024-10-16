@@ -79,6 +79,8 @@ app.use(compression());
 // Habilitar CORS
 app.use(cors({
   origin: 'https://montessori-frontend.pages.dev', // Origen del frontend
+  methods: ['GET', 'POST', 'OPTIONS'], // Métodos permitidos
+  credentials: true, // Permitir cookies y credenciales
 }));
 
 // Middlewares
