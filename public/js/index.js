@@ -14,6 +14,9 @@ app.use(compression());
 // Habilitar CORS
 app.use(cors({
   origin: 'https://montessori-frontend.pages.dev', // Origen del frontend
+//origin: ' http://127.0.0.1:5500'
+
+
 }));
 
 // Middlewares
