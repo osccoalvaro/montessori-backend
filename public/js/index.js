@@ -1,4 +1,4 @@
-import express from 'express';
+/*import express from 'express';
 import compression from 'compression';
 import { z, ZodError } from 'zod';
 import sheets, { SHEET_ID } from './sheetClient.js';
@@ -34,7 +34,7 @@ const contactFormSchema = z.object({
 nombre: z.string().required({ message: 'Nombre is required' }),
 nombre: z.string().nonempty({ message: 'Nombre is required' }),
 */
-
+/*
 app.post('/send-message', async (req, res) => {
   try {
     const body = contactFormSchema.parse(req.body);
@@ -63,3 +63,24 @@ app.post('/send-message', async (req, res) => {
 app.listen(process.env.PORT, () => {
   console.log('Server running in port http://localhost:3000')
 });
+*/
+
+import express from 'express';
+import compression from 'compression';
+import cors from 'cors'; // Importar cors
+import { config } from 'dotenv';
+config({ path: './.env' });
+
+const app = express();
+
+// Habilitar la compresión
+app.use(compression());
+
+// Habilitar CORS
+app.use(cors({
+  origin: 'https://montessori-frontend.pages.dev', // Origen del frontend
+}));
+
+// Middlewares
+app.use(express.json());
+app.use(express.static('public'));
