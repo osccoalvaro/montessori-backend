@@ -11,8 +11,5 @@ const client = new google.auth.JWT(client_email, null, private_key, [
   'https://www.googleapis.com/auth/spreadsheets',
 ]);
 
-
-
-
 const sheets = google.sheets({ version: 'v4', auth: client });
 export default sheets;
