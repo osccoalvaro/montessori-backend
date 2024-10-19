@@ -3,7 +3,7 @@ import compression from 'compression';
 import { z, ZodError } from 'zod';
 import sheets, { SHEET_ID } from './sheetClient.js';
 import { config } from 'dotenv';
-import cors from 'cors'; // Importar cors
+import cors from 'cors';
 config({ path: './.env' });
 
 const app = express();
@@ -13,10 +13,8 @@ app.use(compression());
 
 // Habilitar CORS
 app.use(cors({
-  origin: 'https://montessori.pe', // Origen del frontend
-//origin: ' http://127.0.0.1:5500'
-
-
+  origin: 'https://montessori.pe',
+  //origin: 'http://127.0.0.1:5500'
 }));
 
 // Middlewares
@@ -32,6 +30,11 @@ const contactFormSchema = z.object({
   telefono: z.string().trim().min(1, { message: 'Teléfono is required' }),
   grado: z.string().trim().min(1, { message: 'Grado is required' }),
 });
+
+/*
+nombre: z.string().required({ message: 'Nombre is required' }),
+nombre: z.string().nonempty({ message: 'Nombre is required' }),
+*/
 
 app.post('/send-message', async (req, res) => {
   try {
